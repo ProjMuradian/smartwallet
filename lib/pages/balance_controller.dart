@@ -10,7 +10,7 @@ class BalanceController extends ChangeNotifier {
 
   int get perDayNeed => _perDayNeed;
 
-  setPerDay(int value) {
+  void setPerDay(int value) {
     _perDayNeed = value;
     _updatePerDay(_perDayNeed);
     notifyListeners();
@@ -20,12 +20,12 @@ class BalanceController extends ChangeNotifier {
     return _balance ~/ _perDayNeed;
   }
 
-  _updatePerDay(int value) async {
+  Future<void> _updatePerDay(int value) async {
     var pref = await SharedPreferences.getInstance();
     await pref.setInt("dayKey", value);
   }
 
-  loadBalance() async {
+  Future<void> loadBalance() async {
     var pref = await SharedPreferences.getInstance();
 
     _perDayNeed = pref.getInt("dayKey") ?? 1;

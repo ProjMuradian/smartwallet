@@ -12,12 +12,12 @@ class WalletDb {
   WalletDb._();
   static final WalletDb instance = WalletDb._();
   Box? box;
-  init(String name) async {
+  Future<void> init(String name) async {
     await Hive.initFlutter();
     box = await Hive.openBox("name");
   }
 
-  addMoney(Money value) {
+  void addMoney(Money value) {
     if (totalAmount() + value.amount < 0) {
       return;
     }
@@ -79,7 +79,7 @@ class WalletDb {
         [];
   }
 
-  resetDb() async {
+  Future<void> resetDb() async {
     await box?.clear();
   }
 
@@ -177,6 +177,7 @@ class WalletDb {
       } else {
         path = await FilePicker.platform.getDirectoryPath();
         // ignore: use_build_context_synchronously
+        if (!context.mounted) return;
         String? fileName = await showDialog<String>(
           context: context,
           builder: (context) {

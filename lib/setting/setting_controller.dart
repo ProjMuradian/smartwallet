@@ -6,7 +6,7 @@ class SettingsController with ChangeNotifier {
   static SettingsController instance = SettingsController._();
   ThemeMode _themeMode = ThemeMode.system;
   ThemeMode get themeMode => _themeMode;
-  setThemeMode(ThemeMode value) {
+  void setThemeMode(ThemeMode value) {
     if (value == _themeMode) {
       return;
     }
@@ -15,14 +15,14 @@ class SettingsController with ChangeNotifier {
     _updateThemeMode(value);
   }
 
-  loadSettings() async {
+  Future<void> loadSettings() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     int index = pref.getInt("theme") ?? 0;
     _themeMode = ThemeMode.values[index % 3];
     notifyListeners();
   }
 
-  _updateThemeMode(ThemeMode value) async {
+  Future<void> _updateThemeMode(ThemeMode value) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setInt("theme", value.index);
   }

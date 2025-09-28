@@ -212,6 +212,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 WalletDb.instance.resetDb();
                 pref.setDouble("life_time_use", 0);
                 pref.setDouble("life_time_entry", 0);
+                if (!context.mounted) {
+                  return;
+                }
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text("Reset"),
